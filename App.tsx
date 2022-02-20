@@ -4,23 +4,31 @@ import {
   createNativeStackNavigator,
   NativeStackScreenProps,
 } from '@react-navigation/native-stack';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Text, TouchableHighlight, View} from 'react-native';
-import {useCallback} from 'react';
-
-type RootStackParamList = {
+import {useCallback, useState} from 'react';
+import {Auth, Join, Orders} from './src/pages';
+export type RootStackParamList = {
   Home: undefined;
   Details: undefined;
+  Auth: undefined;
+  Join: undefined;
+  Orders: undefined;
 };
+
 type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
-type DetailsScreenProps = NativeStackScreenProps<ParamListBase, 'Details'>;
+type DetailsScreenProps = NativeStackScreenProps<RootStackParamList, 'Details'>;
+
+const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 
 function HomeScreen({navigation}: HomeScreenProps) {
   const onClick = useCallback(() => {
-    navigation.navigate('Details');
+    navigation.navigate('Auth');
   }, [navigation]);
 
   return (
-    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+    <View>
       <TouchableHighlight onPress={onClick}>
         <Text>Home Screen</Text>
       </TouchableHighlight>
@@ -34,7 +42,7 @@ function DetailsScreen({navigation}: DetailsScreenProps) {
   }, [navigation]);
 
   return (
-    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+    <View>
       <TouchableHighlight onPress={onClick}>
         <Text>Details Screen</Text>
       </TouchableHighlight>
@@ -42,20 +50,29 @@ function DetailsScreen({navigation}: DetailsScreenProps) {
   );
 }
 
-const Stack = createNativeStackNavigator();
 function App() {
+  const [isLogin, setIsLogin] = useState(false);
+
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{title: 'Overview'}}
-        />
-        <Stack.Screen name="Details">
-          {props => <DetailsScreen {...props} />}
-        </Stack.Screen>
-      </Stack.Navigator>
+      {isLogin ? (
+        <Tab.Navigator>
+          <Tab.Screen name="Orders" component={Orders} />
+        </Tab.Navigator>
+      ) : (
+        <Stack.Navigator initialRouteName="Home">
+          <Stack.Screen
+            name="Auth"
+            component={Auth}
+            options={{title: '로그인'}}
+          />
+          <Stack.Screen
+            name="Join"
+            component={Join}
+            options={{title: '회원가입'}}
+          />
+        </Stack.Navigator>
+      )}
     </NavigationContainer>
   );
 }
