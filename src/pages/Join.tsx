@@ -10,9 +10,19 @@ import {
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useCallback, useRef, useState} from 'react';
 import {RootStackParamList} from '../../App';
+import {shallowEqual, useDispatch, useSelector} from 'react-redux';
+import userSlice from '../slices/user';
+import axios from 'axios';
+import articleSlice from '../slices/article';
 type SignInScreenProps = NativeStackScreenProps<RootStackParamList, 'Join'>;
 
 function Join({navigation}: SignInScreenProps) {
+  const dispatch = useDispatch();
+  useSelector(state => {
+    console.log('?sdaa', state.user);
+  });
+  const {setUser} = userSlice.actions;
+
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
@@ -33,6 +43,7 @@ function Join({navigation}: SignInScreenProps) {
   const onChangePassword = useCallback(text => {
     setPassword(text.trim());
   }, []);
+
   const onSubmit = useCallback(() => {
     if (!email || !email.trim()) {
       return Alert.alert('알림', '이메일을 입력해주세요.');
@@ -43,20 +54,15 @@ function Join({navigation}: SignInScreenProps) {
     if (!password || !password.trim()) {
       return Alert.alert('알림', '비밀번호를 입력해주세요.');
     }
-    if (
-      !/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/.test(
-        email,
-      )
-    ) {
-      return Alert.alert('알림', '올바른 이메일 주소가 아닙니다.');
+
+    try {
+      axios.post('http://127.0.0.1:8090/api/user', {
+        todo: 'Buy the milk',
+      });
+    } catch (e) {
+    } finally {
     }
-    if (!/^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[$@^!%*#?&]).{8,50}$/.test(password)) {
-      return Alert.alert(
-        '알림',
-        '비밀번호는 영문,숫자,특수문자($@^!%*#?&)를 모두 포함하여 8자 이상 입력해야합니다.',
-      );
-    }
-    console.log(email, name, password);
+
     Alert.alert('알림', '회원가입 되었습니다.');
   }, [email, name, password]);
 
