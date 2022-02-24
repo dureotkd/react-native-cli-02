@@ -4,23 +4,33 @@ import {Auth, Order, Join} from './src/pages/index';
 import {useSelector, shallowEqual} from 'react-redux';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {useEffect, useLayoutEffect} from 'react';
+import {useCallback, useEffect, useLayoutEffect, useState} from 'react';
+import Config from 'react-native-config';
+import io from 'socket.io-client';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function AppIndex() {
+  const [socketObj, setSocketObj] = useState({});
+
   const isLogin = useSelector(state => {
-    console.log('one', state);
+    return state.user.test ? true : false;
   }, shallowEqual);
 
+  const getSocket = useCallback(() => {
+    console.log('callback', Config.API_URL);
+    const socket = io(`http://10.0.2.2:8090`);
+    setSocketObj(socket);
+  }, []);
+
   useLayoutEffect(() => {
-    console.log('two');
+    console.log('two', isLogin);
   }, []);
 
   useEffect(() => {
-    console.log('three');
-  }, []);
+    getSocket();
+  }, [getSocket]);
 
   return (
     <Tab.Navigator>

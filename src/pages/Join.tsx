@@ -9,11 +9,12 @@ import {
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useCallback, useRef, useState} from 'react';
-import {RootStackParamList} from '../../App';
 import {shallowEqual, useDispatch, useSelector} from 'react-redux';
 import userSlice from '../slices/user';
 import axios from 'axios';
-import articleSlice from '../slices/article';
+import Config from 'react-native-config';
+import DismissKeyboardView from '../components/DismissKeyboardView';
+
 type SignInScreenProps = NativeStackScreenProps<RootStackParamList, 'Join'>;
 
 function Join({navigation}: SignInScreenProps) {
@@ -56,7 +57,7 @@ function Join({navigation}: SignInScreenProps) {
     }
 
     try {
-      axios.post('http://127.0.0.1:8090/api/user', {
+      axios.post(`{Config.API}/api/user`, {
         todo: 'Buy the milk',
       });
     } catch (e) {
@@ -69,7 +70,7 @@ function Join({navigation}: SignInScreenProps) {
   const canGoNext = email && name && password;
 
   return (
-    <View>
+    <DismissKeyboardView>
       <View style={styles.inputWrapper}>
         <Text style={styles.label}>이메일</Text>
         <TextInput
@@ -131,7 +132,7 @@ function Join({navigation}: SignInScreenProps) {
           <Text style={styles.loginButtonText}>회원가입</Text>
         </Pressable>
       </View>
-    </View>
+    </DismissKeyboardView>
   );
 }
 

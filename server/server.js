@@ -11,17 +11,18 @@ app.use(bodyParser.json());
 app.use('/api', bodyParser.urlencoded({extended: true}), router);
 app.use(cors());
 
-http.listen(8090, (req, res) => {
-  console.log(`서버를 요청 받을 준ㄴㅁㅇ비가 되었습니다 👩`);
+const io = require('socket.io')(http, {
+  // transport: ["websocket"],
+  cors: {origin: '*'},
 });
 
-// 등록 되지 않은 패스에대해 페이지 오류 응답
-// router.all('*', (req, res) => {
-//   console.log(req.status);
-//   // res.status(404).send({
-//   //   errorMessage: 'Bye',
-//   // });
-// });
+http.listen(8090, (req, res) => {
+  console.log(`서버를 요청 받을 준비가 되었습니다 👩`);
+});
+
+io.on('connection', socket => {
+  console.log(`소켓 서버가 연결되었습니다 👨`);
+});
 
 router.get('/', (req, res) => {
   res.send('Hello RESTFUL API ');
@@ -29,6 +30,8 @@ router.get('/', (req, res) => {
 
 router.post('/user', (req, res) => {
   const {email, name, nickname} = req.body;
+
+  console.log(email, name, nickname);
 
   res.status(201).send({});
 });
