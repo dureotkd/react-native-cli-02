@@ -3,8 +3,12 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "android": "source ~/.bash_profile&&react-native run-android",
-    "ios": "react-native run-ios",
+    "android:dev": "source ~/.bash_profile&&react-native run-android --variant=developmentdebug",
+    "android:staging": "source ~/.bash_profile&&react-native run-android --variant=stagingdebug",
+    "android:prod": "source ~/.bash_profile&&react-native run-android --variant=productiondebug",
+    "ios:dev": "react-native run-ios --scheme MyAppDev",
+    "ios:staging": "react-native run-ios --scheme MyAppStaging",
+    "ios:prod": "react-native run-ios --scheme MyAppProd",
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"

@@ -12,7 +12,7 @@ app.use('/api', bodyParser.urlencoded({extended: true}), router);
 app.use(cors());
 
 const io = require('socket.io')(http, {
-  // transport: ["websocket"],
+  transport: ['websocket'],
   cors: {origin: '*'},
 });
 

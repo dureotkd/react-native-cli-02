@@ -1,4 +1,16 @@
 apply plugin: "com.android.application"
+
+
+// TODO :성민
+project.ext.envConfigFiles = [
+    productiondebug : ".env.production",
+    productionrelease : ".env.production",
+    developmentrelease: ".env.development",
+    developmentdebug: ".env.development",
+    stagingrelease: ".env.staging",
+    stagingdebug: ".env.staging"
+]
+
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 
 import com.android.build.OutputFile
@@ -158,6 +170,7 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
+            matchingFallbacks = ['debug', 'release'] // 성민
             if (nativeArchitectures) {
                 ndk {
                     abiFilters nativeArchitectures.split(',')
@@ -170,6 +183,15 @@ android {
             signingConfig signingConfigs.debug
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+        }
+        // 성민
+        flavorDimensions "default"
+        productFlavors {
+            production {}
+            staging {
+            // 여기서 빌드별 구성을 할 수 있습니다.
+            }
+            development {}
         }
     }
 
