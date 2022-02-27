@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Auth, Join} from './src/pages/index';
+import {Auth, Join, Orders} from './src/pages/index';
 import {useDispatch} from 'react-redux';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -48,6 +48,7 @@ function AppIndex() {
     <Tab.Navigator>
       <Tab.Screen name="Join" component={Join} />
       <Tab.Screen name="Auth" component={Auth} />
+      <Tab.Screen name="Orders" component={Orders} />
     </Tab.Navigator>
   );
 }
