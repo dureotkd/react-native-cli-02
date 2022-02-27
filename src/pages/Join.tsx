@@ -72,7 +72,7 @@ function Join({navigation}: SignInScreenProps) {
   return (
     <DismissKeyboardView>
       <View style={styles.inputWrapper}>
-        <Text style={styles.label}>이메일</Text>
+        <Text style={styles.label}>이asdsa메일</Text>
         <TextInput
           style={styles.textInput}
           onChangeText={onChangeEmail}
