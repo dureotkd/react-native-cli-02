@@ -67,8 +67,6 @@ function Orders({navigation}: SignInScreenProps) {
     const kakaoToken: KakaoOAuthToken = await kakaoLogin();
     const profile: KakaoProfile = await getProfile();
 
-    console.log(profile);
-
     if (profile) {
       setUser({
         id: profile?.id,
