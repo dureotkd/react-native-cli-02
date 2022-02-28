@@ -1,9 +1,15 @@
-import {View, Text, Pressable} from 'react-native';
+import {View, Text, Pressable, StyleSheet} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useCallback, useRef, useState} from 'react';
 import {RootStackParamList} from '../../App';
-import {NativeModules} from 'react-native';
-const {RNKakaoLogins} = NativeModules;
+import {
+  KakaoOAuthToken,
+  KakaoProfile,
+  getProfile as getKakaoProfile,
+  login,
+  logout,
+  unlink,
+} from '@react-native-seoul/kakao-login';
 type SignInScreenProps = NativeStackScreenProps<RootStackParamList, 'SignIn'>;
 
 export type KakaoOAuthToken = {
@@ -44,10 +50,9 @@ export type KakaoProfile = {
   profileNeedsAgreement?: boolean;
 };
 
-export const login = async (): Promise<KakaoOAuthToken> => {
+export const kakaoLogin = async (): Promise<KakaoOAuthToken> => {
   try {
-    const result: KakaoOAuthToken = await RNKakaoLogins.login();
-
+    const result: KakaoOAuthToken = await login();
     return result;
   } catch (err) {
     throw err;
@@ -55,18 +60,49 @@ export const login = async (): Promise<KakaoOAuthToken> => {
 };
 
 function Orders({navigation}: SignInScreenProps) {
-  const goAuth = useCallback(async () => {
-    await login();
-  }, [navigation]);
+  const [token, setToken] = useState('');
+
+  const goAuth = useCallback(async (): Promise<void> => {
+    const kakaoToken: KakaoOAuthToken = await kakaoLogin();
+    setToken(JSON.stringify(kakaoToken));
+  }, []);
+
+  const getProfile = useCallback(async (): Promise<void> => {
+    const profile: KakaoProfile = await getKakaoProfile();
+    setToken(JSON.stringify(profile));
+  }, []);
+
+  const goLogout = useCallback(async (): Promise<void> => {
+    const msg = await logout();
+    setToken(msg);
+  }, []);
 
   return (
-    <View>
-      <Text>Orders</Text>
-      <Pressable onPress={goAuth}>
-        <Text>go Home</Text>
+    <View style={{display: 'flex', alignItems: 'center', marginTop: 12}}>
+      <Text>{token}</Text>
+      <Pressable style={styles.kakaoBtn} onPress={goAuth}>
+        <Text>카카오 로그인</Text>
+      </Pressable>
+      <Pressable style={styles.kakaoBtn} onPress={getProfile}>
+        <Text>프로필 조회</Text>
+      </Pressable>
+      <Pressable style={styles.kakaoBtn} onPress={goLogout}>
+        <Text>카카오 로그아웃</Text>
       </Pressable>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  kakaoBtn: {
+    width: '50%',
+    backgroundColor: '#FEE500',
+    borderRadius: 20,
+    borderWidth: 1,
+    marginBottom: 12,
+    display: 'flex',
+    alignItems: 'center',
+  },
+});
 
 export default Orders;
