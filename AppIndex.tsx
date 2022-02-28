@@ -18,12 +18,6 @@ function AppIndex() {
 
   console.log(`API URL : ${Config.API_URL}`);
 
-  const getSocket = useCallback(() => {
-    const socket = io(`http://127.0.0.1:8090`);
-    setSocketObj(socket);
-  }, []);
-  1;
-
   useLayoutEffect(() => {}, [dispatch]);
 
   useEffect(() => {
@@ -40,9 +34,7 @@ function AppIndex() {
     //     nickname: '까리하게한방',
     //   },
     // });
-
-    getSocket();
-  }, [getSocket]);
+  }, []);
 
   return (
     <Tab.Navigator>
