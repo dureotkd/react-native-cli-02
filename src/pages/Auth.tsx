@@ -31,9 +31,7 @@ function Auth({navigation}: AuthScreenProps) {
     navigation.navigate('Join');
   }, [navigation]);
 
-  const onSubmit = useCallback(() => {
-    console.log(email, password);
-  }, [email, password]);
+  const onSubmit = useCallback(() => {}, [email, password]);
 
   const onChangeEmail = useCallback(text => {
     setEmail(text.trim());

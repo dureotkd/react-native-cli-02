@@ -1,16 +1,12 @@
 import * as React from 'react';
-import {Provider} from 'react-redux';
+import {Provider, useDispatch} from 'react-redux';
 import store from './src/store';
 import AppIndex from './AppIndex';
 import {NavigationContainer} from '@react-navigation/native';
-
-// export type RootStackParamList = {
-//   Home: undefined;
-//   Details: undefined;
-//   Auth: undefined;
-//   Join: undefined;
-//   Orders: undefined;
-// };
+import messaging from '@react-native-firebase/messaging';
+import PushNotification from 'react-native-push-notification';
+import PushNotificationIOS from '@react-native-community/push-notification-ios';
+import userSlice from './src/slices/user';
 
 function App() {
   return (

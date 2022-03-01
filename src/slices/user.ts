@@ -5,6 +5,7 @@ type stateType = {
   email: string;
   accessToken: string;
   test: boolean;
+  phoneToken: string;
 };
 
 const initialState: stateType = {
@@ -12,6 +13,7 @@ const initialState: stateType = {
   email: '',
   accessToken: '',
   test: true,
+  phoneToken: '',
 };
 const userSlice = createSlice({
   name: 'user',
@@ -23,6 +25,9 @@ const userSlice = createSlice({
       state.name = action.payload.name;
       state.accessToken = action.payload.accessToken;
       state.test = action.payload.test;
+    },
+    setPhoneToken(state, action) {
+      state.phoneToken = action.payload.phoneToken;
     },
   },
 

@@ -14,14 +14,13 @@ import userSlice from '../slices/user';
 import axios from 'axios';
 import Config from 'react-native-config';
 import DismissKeyboardView from '../components/DismissKeyboardView';
+import axiosController from '../api/axiosController';
 
 type SignInScreenProps = NativeStackScreenProps<RootStackParamList, 'Join'>;
 
 function Join({navigation}: SignInScreenProps) {
   const dispatch = useDispatch();
-  useSelector(state => {
-    console.log('?sdaa', state.user);
-  });
+  useSelector(state => {});
   const {setUser} = userSlice.actions;
 
   const [email, setEmail] = useState('');
@@ -57,10 +56,16 @@ function Join({navigation}: SignInScreenProps) {
     }
 
     try {
-      axios.post(`{Config.API}/api/user`, {
-        todo: 'Buy the milk',
+      axiosController({
+        method: 'post',
+        url: '/user',
+        data: {
+          email,
+          name,
+        },
       });
     } catch (e) {
+      console.log(e);
     } finally {
     }
 
@@ -72,7 +77,7 @@ function Join({navigation}: SignInScreenProps) {
   return (
     <DismissKeyboardView>
       <View style={styles.inputWrapper}>
-        <Text style={styles.label}>이asdsa메일</Text>
+        <Text style={styles.label}>이메일</Text>
         <TextInput
           style={styles.textInput}
           onChangeText={onChangeEmail}
